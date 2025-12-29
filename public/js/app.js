@@ -55,9 +55,13 @@ while (true) {
             }
                 uAge = Number(prompt("Insert your age "))
         }
-        
-        
-        let newUser = new Info(uName, uMail , uAge)
+        // * password
+        let uPassword = prompt("Greate your password").trim()
+        while (!uPassword || uPassword.includes(" ") || uPassword.replace(/\s+/g, "").length < 7 || !/["@", "#", "-", "+", "*", "/"]/.test(uPassword) ) {
+            alert("- Password must be at least 7 characters long,\n - cannot contain spaces,\n - and must include at least one special character: @, #, -, +, *, /")
+            uPassword = prompt("Greate your password").trim()
+        }
+        let newUser = new Info(uName, uMail , uAge , uPassword)
         databasse.push(newUser)
 
         alert("Welcome")
