@@ -37,6 +37,7 @@ while (true) {
         // * email
         let uMail = prompt("Insert your email").trim().toLowerCase()
         while (!uMail || uMail.includes(" ") || uMail.replace(/\s+/g, "").length < 10 || !/@/.test(uMail) || databasse.some(user => user.email === uMail)) {
+            // ^ check wash ende had l email before
             if (databasse.some(user => user.email === uMail)) {
                 alert("This email is already registered")
             } else {
@@ -60,6 +61,12 @@ while (true) {
         while (!uPassword || uPassword.includes(" ") || uPassword.replace(/\s+/g, "").length < 7 || !/["@", "#", "-", "+", "*", "/"]/.test(uPassword) ) {
             alert("- Password must be at least 7 characters long,\n - cannot contain spaces,\n - and must include at least one special character: @, #, -, +, *, /")
             uPassword = prompt("Greate your password").trim()
+        }
+        // ^ confirme Password
+        let cPassword = prompt("Confirme your password").trim()
+        if (cPassword !== uPassword) {
+            alert("Your Password not correct")
+            break
         }
         let newUser = new Info(uName, uMail , uAge , uPassword)
         databasse.push(newUser)
