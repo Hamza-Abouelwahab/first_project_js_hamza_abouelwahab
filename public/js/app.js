@@ -9,6 +9,14 @@ class Info {
 
 let databasse = []
 
+function checkPassword(password) {    // ! function password
+            if(password.includes(" ")) return true
+            if(password.replace(/\s+/g, "").length < 7 ) return true
+            if(!/[a-zA-Z]/.test(password)) return true
+            if(!/[@#\-+*/]/.test(password)) return true
+            return false
+        }
+
 while (true) {
 
     let askUser = prompt("What do you want now?\n- sign up\n- login up\n- change password\n- exit")
@@ -64,13 +72,6 @@ while (true) {
         }
         // * password
         let uPassword = prompt("Greate your password").trim()
-        function checkPassword(password) {    // ! function password
-            if(password.includes(" ")) return true
-            if(password.replace(/\s+/g, "").length < 7 ) return true
-            if(!/[a-zA-Z]/.test(password)) return true
-            if(!/[@#\-+*/]/.test(password)) return true
-            return false
-        }
         while (!uPassword || checkPassword(uPassword)) {
             alert("- Password must be at least 7 characters long,\n - cannot contain spaces,\n - and must include at least one special character: @, #, -, +, *, /")
             uPassword = prompt("Greate your password").trim()
@@ -103,7 +104,20 @@ while (true) {
         }
 
     } else if (askUser === "change password") {
-        alert("Chosen change password")
+        let changeMail = prompt("enter your email").trim().toLowerCase()
+        let findMail = databasse.findIndex(e => e.email.toLowerCase() == changeMail)
+        if (findMail != -1) {
+            let changePassword = prompt("Greate a new password ")
+            
+        while (!changePassword || checkPassword(changePassword)) {
+            alert("- Password must be at least 7 characters long,\n - cannot contain spaces,\n - and must include at least one special character: @, #, -, +, *, /")
+            changePassword = prompt("Greate a new password").trim()
+        }
+        databasse[findMail].password = changePassword
+        }else{
+            alert("Wrong email \n - try agian")
+            changeMail = prompt("enter your email").trim().toLowerCase() // ? hadi gha tar9ia3a makhadamach (mab9ach lia lwe9t fin nsawbha )
+        }
     } else {
         alert("You are not serious")
     }
