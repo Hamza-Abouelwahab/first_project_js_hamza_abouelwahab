@@ -27,14 +27,26 @@ while (true) {
         function checkName(name) {
             return name.trim().split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ")
         }
-        
+
         while (uName.replace(/\s+/g, "").length < 5 || !/^[a-zA-Z\s]+$/.test(uName)) {
             alert("Write at least 5 letters and don't use numbers or special characters")
             uName = prompt("Insert your name")
         }
         uName = checkName(uName)
 
-        let newUser = new Info(uName)
+        // * email
+        let uMail = prompt("Insert your email").trim().toLowerCase()
+        while (!uMail || uMail.includes(" ") || uMail.replace(/\s+/g, "").length < 10 || !/@/.test(uMail) || databasse.some(user => user.email === uMail)) {
+            if (databasse.some(user => user.email === uMail)) {
+                alert("This email is already registered")
+            } else {
+                alert("Invalid email. Must contain '@', no spaces, and at least 10 characters")
+            }
+            uMail = prompt("Insert your email").trim().toLowerCase()
+        }
+
+        
+        let newUser = new Info(uName, uMail)
         databasse.push(newUser)
 
         alert("Welcome")
