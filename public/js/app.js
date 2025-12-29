@@ -92,8 +92,12 @@ while (true) {
         
         let findMail = databasse.findIndex(e => e.email.toLowerCase() == lMail)
         if (findMail != -1) {
-            // let lPassword = prompt("enter your password")
-            
+            let lPassword = prompt("enter your password")
+            if (databasse[findMail].password == lPassword) {
+                alert("welcome agian")
+            }else{
+                alert("password ghalat")
+            }
         }else{
             alert("makaynch had email")
         }
