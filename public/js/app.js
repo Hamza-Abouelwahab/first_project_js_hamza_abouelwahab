@@ -44,9 +44,20 @@ while (true) {
             }
             uMail = prompt("Insert your email").trim().toLowerCase()
         }
-
+        // * age
+        let uAge = Number(prompt("Insert your age "))
+        while (isNaN(uAge) || uAge < 18) {
+            if (isNaN(uAge)) {
+                alert("Insert a number ")
+            }
+            else if (uAge < 18) {
+                alert("You are too young")
+            }
+                uAge = Number(prompt("Insert your age "))
+        }
         
-        let newUser = new Info(uName, uMail)
+        
+        let newUser = new Info(uName, uMail , uAge)
         databasse.push(newUser)
 
         alert("Welcome")
