@@ -24,7 +24,7 @@ while (true) {
 
         // * Name
         let uName = prompt("Insert your name")
-        function checkName(name) {
+        function checkName(name) {  // ! function name
             return name.trim().split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ")
         }
 
@@ -36,7 +36,13 @@ while (true) {
 
         // * email
         let uMail = prompt("Insert your email").trim().toLowerCase()
-        while (!uMail || uMail.includes(" ") || uMail.replace(/\s+/g, "").length < 10 || !/@/.test(uMail) || databasse.some(user => user.email === uMail)) {
+        function checkEmail(email) {   // ! function email 
+            if (email.includes(" ")) return true
+            if (!email.includes("@")) return true
+            if (email.length < 10) return true
+            return false
+        }
+        while (!uMail || checkEmail(uMail) || databasse.some(user => user.email === uMail)) {
             // ^ check wash ende had l email before
             if (databasse.some(user => user.email === uMail)) {
                 alert("This email is already registered")
@@ -58,7 +64,14 @@ while (true) {
         }
         // * password
         let uPassword = prompt("Greate your password").trim()
-        while (!uPassword || uPassword.includes(" ") || uPassword.replace(/\s+/g, "").length < 7 || !/["@", "#", "-", "+", "*", "/"]/.test(uPassword) ) {
+        function checkPassword(password) {    // ! function password
+            if(password.includes(" ")) return true
+            if(password.replace(/\s+/g, "").length < 7 ) return true
+            if(!/[a-zA-Z]/.test(password)) return true
+            if(!/[@#\-+*/]/.test(password)) return true
+            return false
+        }
+        while (!uPassword || checkPassword(uPassword)) {
             alert("- Password must be at least 7 characters long,\n - cannot contain spaces,\n - and must include at least one special character: @, #, -, +, *, /")
             uPassword = prompt("Greate your password").trim()
         }
@@ -75,7 +88,16 @@ while (true) {
         console.log(databasse)
 
     } else if (askUser === "login up") {
-        alert("Chosen login")
+        let lMail = prompt("enter your email please : ").trim().toLowerCase()
+        
+        let findMail = databasse.findIndex(e => e.email.toLowerCase() == lMail)
+        if (findMail != -1) {
+            // let lPassword = prompt("enter your password")
+            
+        }else{
+            alert("makaynch had email")
+        }
+
     } else if (askUser === "change password") {
         alert("Chosen change password")
     } else {
