@@ -6,7 +6,6 @@ class Info {
         this.password = password
     }
 }
-
 let databasse = []
 
 function checkPassword(password) {    // ! function password
@@ -19,7 +18,7 @@ function checkPassword(password) {    // ! function password
 
 while (true) {
 
-    let askUser = prompt("What do you want now?\n- sign up\n- login up\n- change password\n- exit")
+    let askUser = prompt("What do you want now?\n- sign up\n- login\n- change password\n- exit")
 
     askUser = askUser.trim().toLowerCase()
 
@@ -85,17 +84,17 @@ while (true) {
         let newUser = new Info(uName, uMail , uAge , uPassword)
         databasse.push(newUser)
 
-        alert("Welcome")
+        alert("Your account has been created successfully.")
         console.log(databasse)
 
-    } else if (askUser === "login up") {
+    } else if (askUser === "login") {
         let lMail = prompt("enter your email please : ").trim().toLowerCase()
         
         let findMail = databasse.findIndex(e => e.email.toLowerCase() == lMail)
         if (findMail != -1) {
             let lPassword = prompt("enter your password")
             if (databasse[findMail].password == lPassword) {
-                alert("welcome agian")
+                alert("welcome agian " + databasse[findMail].name)
             }else{
                 alert("password ghalat")
             }
@@ -104,20 +103,27 @@ while (true) {
         }
 
     } else if (askUser === "change password") {
-        let changeMail = prompt("enter your email").trim().toLowerCase()
-        let findMail = databasse.findIndex(e => e.email.toLowerCase() == changeMail)
-        if (findMail != -1) {
-            let changePassword = prompt("Greate a new password ")
+        let changeMail
+        let findMail
+        while (true) {
+            changeMail = prompt("enter your email").trim().toLowerCase()
+            findMail = databasse.findIndex(e => e.email.toLowerCase() == changeMail)
+            if (findMail != -1) {
+                let changePassword = prompt("Greate a new password ").trim()
+                
             
         while (!changePassword || checkPassword(changePassword)) {
             alert("- Password must be at least 7 characters long,\n - cannot contain spaces,\n - and must include at least one special character: @, #, -, +, *, /")
             changePassword = prompt("Greate a new password").trim()
         }
         databasse[findMail].password = changePassword
+        alert("Password changed successfully")
+        break
         }else{
-            alert("Wrong email \n - try agian")
-            changeMail = prompt("enter your email").trim().toLowerCase() // ? hadi gha tar9ia3a makhadamach (mab9ach lia lwe9t fin nsawbha )
+            alert("Wrong email")
         }
+        }
+        
     } else {
         alert("You are not serious")
     }
