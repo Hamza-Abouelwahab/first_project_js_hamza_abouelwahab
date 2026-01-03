@@ -1,54 +1,123 @@
+
 class Info {
-    constructor(name, email, age, password) {
+    constructor(name, email, age, password,money,withraw) {
         this.name = name
         this.email = email
         this.age = age
         this.password = password
+        this.money = money
+        this.withraw = withraw
     }
 }
 let databasse = []
 
-function checkPassword(password) {    // ! function password
+// ! function name
+function checkName(name) {  
+    return name.trim().split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ")
+}
+// ! function email 
+function checkEmail(email) {    
+            if (email.includes(" ")) return true
+            if(email.split("@").length -1 !== 1) return true
+            if (email.length < 10) return true
+            if(/[A-Z]/.test(email)) return true
+            return false
+        }
+// ! function password
+function checkPassword(password) {    
             if(password.includes(" ")) return true
             if(password.replace(/\s+/g, "").length < 7 ) return true
             if(!/[a-zA-Z]/.test(password)) return true
-            if(!/[@#\-+*/]/.test(password)) return true
+            if(password.split("@").length -1 !== 1) return true
             return false
         }
 
-while (true) {
+// * ------------------------------------function login------------------------------------------
+function login() {
+    while (true) {
+            let lMail = prompt("Enter your email please : ").trim().toLowerCase()
+            let findMail = databasse.findIndex(e => e.email.toLowerCase() == lMail)
+        if (findMail != -1) {
+            
+            while (true) {
+                let lPassword = prompt("Enter your password please")
+                if (databasse[findMail].password == lPassword) {
+                alert("Welcome agian " + databasse[findMail].name)
+                alert("Your money is" + databasse[findMail].money)
 
-    let askUser = prompt("What do you want now?\n- sign up\n- login\n- change password\n- exit")
-
+                    return databasse[findMail]
+            }else{
+                alert("Incorrect password, please try again") 
+            }
+        }
+        }else{
+        alert("This email is not registered")            
+        }
+    }
+}
+function userMenu(user){
+    let userLog  = prompt("What do you want Mester " +  user.name + "\n" + "- Logout" + "\n" + "- Withraw Money " + "\n" + "- Deposit Money" + "\n" + "- Take a Loan").trim().toLowerCase()
+    if (userLog == "logout") {
+        alert(" Good by ")
+        // * ki rja3 l part lawela 
+    }
+    else if(userLog == "withraw money") {
+        withrawMoney(user)
+    }
+    else if (userLog == "deposit money") {
+        alert("Your in the Deposit Money")
+    }
+    else if (userLog == "take a loan") {
+        alert("Your in the Take a Loan")
+    }else{
+        alert("error")
+    }
+    return userLog
+}
+// * ---------------------------------------------withraw money-------------------------------------------------------
+function withrawMoney(user) {
+    while (true) {
+        let amount = Number(prompt("Enter the amount you want to withdraw"))
+    if (isNaN(amount)) {
+        alert("Please insert a valid number");
+    }
+    else if(0 >= amount){
+        alert("Amount must be greater than 0")
+    }
+    else if (user.money < amount){
+        alert("You don't have enough money")
+    }
+    else{
+        user.money -= amount
+        alert("Withdraw successful")
+        alert( " Mester " + user.name + " your many now is " + user.money)
+        console.log(  " Mester " +user.name + " your many now is " + user.money);
+    
+        break
+    }
+    }
+}
+        // & --------------------------------------------------------------------------------------------------
+        while (true) {
+            // ? ask user : 
+        let askUser = prompt("What do you want now?\n- sign up\n- login\n- change password\n- exit")
     askUser = askUser.trim().toLowerCase()
-
+    // todo had part dyal exit
     if (askUser === "exit") {
         alert("Exiting menu...")
-        continue
+        break
     }
-
+    // todo : had part dyal sign up
     if (askUser === "sign up") {
-
         // * Name
         let uName = prompt("Insert your name")
-        function checkName(name) {  // ! function name
-            return name.trim().split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ")
-        }
-
         while (uName.replace(/\s+/g, "").length < 5 || !/^[a-zA-Z\s]+$/.test(uName)) {
             alert("Write at least 5 letters and don't use numbers or special characters")
             uName = prompt("Insert your name")
         }
         uName = checkName(uName)
-
         // * email
-        let uMail = prompt("Insert your email").trim().toLowerCase()
-        function checkEmail(email) {   // ! function email 
-            if (email.includes(" ")) return true
-            if (!email.includes("@")) return true
-            if (email.length < 10) return true
-            return false
-        }
+        let uMail = prompt("Insert your email").trim()
         while (!uMail || checkEmail(uMail) || databasse.some(user => user.email === uMail)) {
             // ^ check wash ende had l email before
             if (databasse.some(user => user.email === uMail)) {
@@ -60,12 +129,15 @@ while (true) {
         }
         // * age
         let uAge = Number(prompt("Insert your age "))
-        while (isNaN(uAge) || uAge < 18) {
+        while (isNaN(uAge) || uAge < 18 || uAge > 100) {
             if (isNaN(uAge)) {
                 alert("Insert a number ")
             }
             else if (uAge < 18) {
                 alert("You are too young")
+            }
+            else if (uAge > 100) {
+                alert("you are too old ")
             }
                 uAge = Number(prompt("Insert your age "))
         }
@@ -81,32 +153,25 @@ while (true) {
             alert("Your Password not correct")
             break
         }
-        let newUser = new Info(uName, uMail , uAge , uPassword)
-        databasse.push(newUser)
 
+        // ~ push Info to databasse
+        let newUser = new Info(uName, uMail , uAge , uPassword, 100)
+        databasse.push(newUser)        
         alert("Your account has been created successfully.")
         console.log(databasse)
 
+// TODO : had part dyal login
     } else if (askUser === "login") {
-        let lMail = prompt("enter your email please : ").trim().toLowerCase()
+        let currentUser = login()
+        userMenu(currentUser)
         
-        let findMail = databasse.findIndex(e => e.email.toLowerCase() == lMail)
-        if (findMail != -1) {
-            let lPassword = prompt("enter your password")
-            if (databasse[findMail].password == lPassword) {
-                alert("welcome agian " + databasse[findMail].name)
-            }else{
-                alert("password ghalat")
-            }
-        }else{
-            alert("makaynch had email")
-        }
 
-    } else if (askUser === "change password") {
+// todo : had part dyal change password
+    } else if (askUser === "Change password") {
         let changeMail
         let findMail
         while (true) {
-            changeMail = prompt("enter your email").trim().toLowerCase()
+            changeMail = prompt("Enter your email please").trim().toLowerCase()
             findMail = databasse.findIndex(e => e.email.toLowerCase() == changeMail)
             if (findMail != -1) {
                 let changePassword = prompt("Greate a new password ").trim()
@@ -128,3 +193,4 @@ while (true) {
         alert("You are not serious")
     }
 }
+
