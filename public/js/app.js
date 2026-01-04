@@ -55,6 +55,7 @@ function login() {
         }
     }
 }
+// *----------------------------------------------------- user Menu befor login user -------------------------------------------------------------
 function userMenu(user){
     let userLog  = prompt("What do you want Mester " +  user.name + "\n" + "- Logout" + "\n" + "- Withraw Money " + "\n" + "- Deposit Money" + "\n" + "- Take a Loan").trim().toLowerCase()
     if (userLog == "logout") {
@@ -65,7 +66,7 @@ function userMenu(user){
         withrawMoney(user)
     }
     else if (userLog == "deposit money") {
-        alert("Your in the Deposit Money")
+        depositMoney(user)
     }
     else if (userLog == "take a loan") {
         alert("Your in the Take a Loan")
@@ -97,7 +98,24 @@ function withrawMoney(user) {
     }
     }
 }
-        // & --------------------------------------------------------------------------------------------------
+    // * ------------------------------------------------deposit money------------------------------------------------------
+        function depositMoney(user) {
+            while (true) {
+                let askUser = Number(prompt("Enter the amount you want to deposit"))
+                if (isNaN(askUser)) {
+                    alert("Please isert a valid number")
+                }
+                else if (askUser <= 0) {
+                    alert("Amount must be greater than 0")
+                }
+                else{
+                    user.money += askUser
+                    alert("- Deposit successful: " + askUser + "\n" +"- Available balance: " + user.money);
+                    break
+                }
+            }
+        }
+    // & --------------------------------------------------------------------------------------------------
         while (true) {
             // ? ask user : 
         let askUser = prompt("What do you want now?\n- sign up\n- login\n- change password\n- exit")
