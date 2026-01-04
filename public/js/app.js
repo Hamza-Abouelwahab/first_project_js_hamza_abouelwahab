@@ -1,12 +1,13 @@
 
 class Info {
-    constructor(name, email, age, password,money,withraw) {
+    constructor(name, email, age, password,money,loanAmount) {
         this.name = name
         this.email = email
         this.age = age
         this.password = password
         this.money = money
-        this.withraw = withraw
+        this.loanAmount = loanAmount
+
     }
 }
 let databasse = []
@@ -69,7 +70,7 @@ function userMenu(user){
         depositMoney(user)
     }
     else if (userLog == "take a loan") {
-        alert("Your in the Take a Loan")
+        takeALoan(user)
     }else{
         alert("error")
     }
@@ -103,7 +104,7 @@ function withrawMoney(user) {
             while (true) {
                 let askUser = Number(prompt("Enter the amount you want to deposit"))
                 if (isNaN(askUser)) {
-                    alert("Please isert a valid number")
+                    alert("Please insert a valid number")
                 }
                 else if (askUser <= 0) {
                     alert("Amount must be greater than 0")
@@ -111,6 +112,33 @@ function withrawMoney(user) {
                 else{
                     user.money += askUser
                     alert("- Deposit successful: " + askUser + "\n" +"- Available balance: " + user.money);
+                    break
+                }
+            }
+        }
+    // * -------------------------------------------------take a loan----------------------------------------------------
+        function takeALoan(user){
+            while (true) {
+                let askUser = parseFloat(prompt("ch7al bghiti nsalfok"))
+                
+                if (isNaN(askUser)) {
+                    alert("Please insert a valid number")
+                }
+                else if (askUser <= 0 ){
+                    alert("valid percentage");
+                }
+                else{
+                    
+                    if (askUser > 1) {
+                        askUser = askUser / 100
+                    }
+                    askUser = Math.round(askUser * 100) / 100
+                    user.loanAmount = askUser * 100
+                    user.money += user.money * askUser
+                    alert("Loan successful! Your money now is " + user.money);
+                    console.log("Loan percentage stored:", user.loanAmount);
+                    console.log("User money:", user.money);
+                    
                     break
                 }
             }
