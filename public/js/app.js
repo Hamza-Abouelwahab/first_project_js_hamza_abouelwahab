@@ -44,19 +44,22 @@ function login() {
                 let lPassword = prompt("Enter your password please")
                 if (databasse[findMail].password == lPassword) {
                 alert("Welcome agian " + databasse[findMail].name)
-                alert("Your money is " + databasse[findMail].money)
+                // alert("Your money is " + databasse[findMail].money)
 
                     let user = databasse[findMail]
+
                     if (user.remainingLoan > 0) {
-                        let pinalty = user.remainingLoan * 0.1
+                        let pinalty = user.loanAmount * 0.1
                         if (pinalty > user.remainingLoan) {
                             pinalty = user.remainingLoan
                             
                         }
+                        if (pinalty > 0 ) {
                         user.money -= pinalty
-                        user.loanAmount -= pinalty
+                        user.remainingLoan -= pinalty
                         alert("Loan payment: -" + pinalty)
                         console.log("Loan payment: -" + pinalty)
+                        }
                     }
                     alert("Your money is " + user.money)
                     console.log("Your money is " + user.money)
