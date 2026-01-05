@@ -1,13 +1,13 @@
 
 class Info {
-    constructor(name, email, age, password,money,loanAmount) {
+    constructor(name, email, age, password,money,loanAmount, remainingLoan) {
         this.name = name
         this.email = email
         this.age = age
         this.password = password
         this.money = money
         this.loanAmount = loanAmount
-
+        this.remainingLoan = remainingLoan
     }
 }
 let databasse = []
@@ -44,9 +44,24 @@ function login() {
                 let lPassword = prompt("Enter your password please")
                 if (databasse[findMail].password == lPassword) {
                 alert("Welcome agian " + databasse[findMail].name)
-                alert("Your money is" + databasse[findMail].money)
+                alert("Your money is " + databasse[findMail].money)
 
-                    return databasse[findMail]
+                    let user = databasse[findMail]
+                    if (user.remainingLoan > 0) {
+                        let pinalty = user.remainingLoan * 0.1
+                        if (pinalty > user.remainingLoan) {
+                            pinalty = user.remainingLoan
+                            
+                        }
+                        user.money -= pinalty
+                        user.loanAmount -= pinalty
+                        alert("Loan payment: -" + pinalty)
+                        console.log("Loan payment: -" + pinalty)
+                    }
+                    alert("Your money is " + user.money)
+                    console.log("Your money is " + user.money)
+
+                    return user
             }else{
                 alert("Incorrect password, please try again") 
             }
@@ -118,25 +133,36 @@ function withrawMoney(user) {
         }
     // * -------------------------------------------------take a loan----------------------------------------------------
         function takeALoan(user){
+            if (user.remainingLoan > 0) {
+                alert("You already have a loan pay it first ")
+                return
+            }
+
             while (true) {
-                let askUser = parseFloat(prompt("ch7al bghiti nsalfok"))
+                let askUser = parseFloat(prompt("How much do you want to borrow ? (20% only)"))
                 
                 if (isNaN(askUser)) {
                     alert("Please insert a valid number")
                 }
-                else if (askUser <= 0 ){
-                    alert("valid percentage");
-                }
+
                 else{
                     
-                    if (askUser > 1) {
+                    if (askUser == 20) {
                         askUser = askUser / 100
                     }
+                    else if (askUser !== 0.2  ){
+                    alert("Loan must be 20%");
+                        continue
+                    }
                     askUser = Math.round(askUser * 100) / 100
-                    user.loanAmount = askUser * 100
-                    user.money += user.money * askUser
+                    
+                    let baseLoan = user.money * askUser
+                    user.loanAmount = baseLoan
+                    user.remainingLoan = baseLoan
+                    user.money += baseLoan
+                    user.money = Math.round(user.money * 100 ) / 100
                     alert("Loan successful! Your money now is " + user.money);
-                    console.log("Loan percentage stored:", user.loanAmount);
+                    console.log("Loan percentage stored:", baseLoan);
                     console.log("User money:", user.money);
                     
                     break
